@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Entry by {{ entry.name }}{% endblock %}
+
+{% block content %}
+<article class="entry-detail">
+  <img src="{{ url_for('static', filename='avatars/' + entry.avatar) }}" alt="Avatar" class="avatar-large" />
+  <h2>{{ entry.name }}</h2>
+  <p class="full-message">{{ entry.message }}</p>
+
+  <a href="{{ url_for('index') }}" class="back-link">← Back to Guestbook</a>
+</article>
+{% endblock %}
