@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Guestbook Home{% endblock %}
+
+{% block content %}
+<h1>Welcome to the Guestbook</h1>
+
+{% if error %}
+<div class="error">{{ error }}</div>
+{% endif %}
+
+<section class="form-section">
+  <h2>Add a New Entry</h2>
+  <form method="POST" novalidate>
+    <input type="text" name="name" placeholder="Your Name" required maxlength="30" />
+    <textarea name="message" placeholder="Your Message" rows="4" required maxlength="300"></textarea>
+
+    <label for="avatar-select">Choose an avatar:</label>
+    <select name="avatar" id="avatar-select">
+      {% for avatar in avatars %}
+        <option value="{{ avatar }}">{{ avatar.replace('.png', '').capitalize() }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit">Submit</button>
+  </form>
+</section>
+
+<section class="entries-section">
+  <h2>Guestbook Entries</h2>
+  {% if entries %}
+    <ul class="entries-list">
+      {% for entry in entries | reverse %}
+      <li class="entry-card">
+        <img src="{{ url_for('static', filename='avatars/' + entry.avatar) }}" alt="Avatar" class="avatar" />
+        <div class="entry-info">
+          <a href="{{ url_for('entry_detail', entry_id=entry.id) }}" class="entry-name">{{ entry.name }}</a>
+          <p class="entry-message">{{ entry.message | truncate(100) }}</p>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="no-entries">No entries yet. Be the first to sign the guestbook!</p>
+  {% endif %}
+</section>
+{% endblock %}
